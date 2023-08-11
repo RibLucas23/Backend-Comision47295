@@ -1,0 +1,29 @@
+[
+	{
+		"title": "mesa",
+		"description": "mesa gamer",
+		"price": 222,
+		"thumbnail": "asd",
+		"stock": 10,
+		"code": 343,
+		"id": 0
+	},
+	{
+		"title": "mesaza",
+		"description": "mesaza gamer",
+		"price": 3332,
+		"thumbnail": "asd",
+		"stock": 5,
+		"code": 10,
+		"id": 1
+	},
+	{
+		"title": "mesita",
+		"description": "mesita gamer",
+		"price": 32,
+		"thumbnail": "asddas",
+		"stock": 56,
+		"code": 22,
+		"id": 2
+	}
+]
