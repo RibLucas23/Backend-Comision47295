@@ -7,10 +7,10 @@ class ProductManager {
 
     constructor(path) {
         this.path = path
-        this.products = []
     }
     async addProduct(title, description, price, thumbnail, code, stock) {
         try {
+            console.log(ProductManager.id)
             // creo  el producto
             const product =
             {
@@ -32,18 +32,27 @@ class ProductManager {
                 return console.log("llene todo los campos")
             }
             // valido que el code no este en uso
-            if (this.codeValidation(product.code)) {
+            if (await this.codeValidation(product.code)) {
                 console.log("code ya en uso")
                 throw error
             }
 
             // pusheo el producto al array de productos si esta todo ok
-            this.products.push(product)
-            ProductManager.id++
-            await fs.promises.writeFile(this.path, JSON.stringify(this.products, null, '\t'))
+            const productos = await this.getProducts()
+            await this.aumentarID()
+            await productos.push(product)
+            await fs.promises.writeFile(
+                this.path,
+                JSON.stringify(productos, null, '\t')
+            );
+            console.log(ProductManager.id)
+
         } catch (error) {
 
         }
+    }
+    async aumentarID() {
+        ProductManager.id++
     }
 
     async getProducts() {
@@ -57,10 +66,17 @@ class ProductManager {
             console.log(error)
         }
     }
-    codeValidation(code) {
-        const val = this.products.find((products) => products.code === code)
-        if (val) {
-            return true
+    async codeValidation(code) {
+        try {
+            const products = await this.getProducts()
+            const val = products.find((products) => products.code === code)
+            if (val) {
+                return true
+            }
+            return false
+
+        } catch (error) {
+
         }
     }
     async getProductById(idProducto) {
@@ -110,11 +126,17 @@ class ProductManager {
 }
 
 const productManager = new ProductManager("./products.json")
-productManager.addProduct("mesa", "mesa gamer", 222, "asd", 343, 10)
-productManager.addProduct("mesaza", "mesaza gamer", 3332, "asd", 10, 5)
-productManager.addProduct("mesazaza", "mesaza gamer", 33322, "asd", 120, 5)
-// productManager.getProductById(1)
-// productManager.getProductById(2)
-// productManager.deleteProduct(2)
-productManager.updateProduct(2, "mesita", "mesita gamer", 32, "asddas", 22, 56)
-productManager.getProducts()
+
+
+
+const funcionAsync = async () => {
+    const productManager = new ProductManager("./products.json")
+    // await productManager.addProduct("mesa", "mesa gamer", 222, "asd", 345563, 10)
+    // await productManager.addProduct("mesaza", "mesaza gamer", 3332, "asd", 15550, 5)
+    // await productManager.addProduct("mesazaza", "mesaza gamer", 33322, "asd", 16520, 5)
+    await productManager.updateProduct(2, "mesita", "mesita gamer", 32, "asddas", 22, 56)
+
+
+};
+
+funcionAsync();
