@@ -1,0 +1,80 @@
+[
+	{
+		"title": "mesa",
+		"description": "mesa gamer",
+		"price": 222,
+		"thumbnail": "asd",
+		"stock": 10,
+		"code": 34563,
+		"id": 0
+	},
+	{
+		"title": "mesaza",
+		"description": "mesaza gamer",
+		"price": 3332,
+		"thumbnail": "asd",
+		"stock": 5,
+		"code": 1550,
+		"id": 1
+	},
+	{
+		"title": "mesita",
+		"description": "mesita gamer",
+		"price": 32,
+		"thumbnail": "asddas",
+		"stock": 56,
+		"code": 22,
+		"id": 2
+	},
+	{
+		"title": "sillaza",
+		"description": "sillaza ",
+		"price": 232323,
+		"thumbnail": "asd",
+		"stock": 485,
+		"code": 3495432259,
+		"id": 3
+	},
+	{
+		"title": "sillaza doble",
+		"description": "con uptade",
+		"price": 232323,
+		"thumbnail": "asd",
+		"stock": 48523,
+		"code": "8446854gfhgfh",
+		"id": 4,
+		"category": "mobiliarios"
+	},
+	{
+		"title": "silla",
+		"description": "con uptade",
+		"price": 232323,
+		"thumbnail": "asd",
+		"stock": 48523,
+		"code": "asasdasd4234234",
+		"id": 5,
+		"category": "mobiliarios"
+	},
+	{
+		"title": "sillaza doble",
+		"description": "sillaza  con uptade",
+		"price": 232323,
+		"thumbnail": "asd",
+		"stock": 48523,
+		"category": "mobiliarios",
+		"code": "32",
+		"status": true,
+		"id": 6
+	},
+	{
+		"title": "mesa",
+		"description": "post",
+		"price": 232323,
+		"thumbnail": "asd",
+		"stock": 48523,
+		"category": "mobiliarios",
+		"code": "2355515trtrt",
+		"status": true,
+		"id": 7
+	}
+]
