@@ -69,7 +69,7 @@ class CartManager {
 			if (indexCart === -1) {
 				throw new Error('Carrito no encontrado');
 			}
-			const cart = carts[indexCart];
+			const cart = arrayCarts[indexCart];
 			const existingProduct = cart.productos.find(
 				(product) => product.productid === productid,
 			);
@@ -83,7 +83,7 @@ class CartManager {
 				existingProduct.quantity++;
 			}
 
-			arrayCarts[indexCart].productos[indexOldProd].quantity++;
+			// arrayCarts[indexCart].productos[indexOldProd].quantity++;
 			return await this.writeJson(arrayCarts);
 		} catch (error) {
 			console.log(error);
@@ -162,14 +162,4 @@ class CartManager {
 		}
 	}
 }
-// const prod = {
-// 	title: 'sillaza',
-// 	description: 'sillaza ',
-// 	price: 232323,
-// 	thumbnail: 'asd',
-// 	stock: 485,
-// 	code: 3495432259,
-// 	id: 4,
-// };
-
 export default CartManager;
