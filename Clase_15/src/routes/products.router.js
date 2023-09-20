@@ -11,7 +11,7 @@ const mongoProducts = new ProductsManagerMongo();
 //GET ALL
 productsRouter.get('/mongo', async (req, res) => {
 	const productsAll = await mongoProducts.getAll();
-	res.status(200).render('home', { productsAll });
+	res.status(200).render('productsMongo', { productsAll });
 });
 
 //CREATE PRODUCT
@@ -28,7 +28,8 @@ productsRouter.post('/mongo', async (req, res) => {
 			category,
 			code,
 		);
-		res.status(200).send(product);
+		const productsAll = await mongoProducts.getAll();
+		res.status(200).render('productsMongo', { productsAll });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: ' Internal server error' });

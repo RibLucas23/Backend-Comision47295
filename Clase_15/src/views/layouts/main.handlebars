@@ -13,10 +13,10 @@
 
 	</head>
 	<body>
-		<nav class='navbar navbar-expand-lg navbar-light bg-light'>
+		<nav class='navbar navbar-expand-lg navbar-dark bg-dark'>
 			<div class='container-fluid'>
 				{{! nav tittle }}
-				<a class='navbar-brand' href='#'>CoderProyect</a>
+				<a class='navbar-brand' href='/api/products/mongo'>CoderProyect</a>
 				<button
 					class='navbar-toggler'
 					type='button'
@@ -47,7 +47,21 @@
 						</li>
 						{{! carts MONGO }}
 						<li class='nav-item'>
-							<a class='nav-link' href='/api/carts/mongo'>Carts</a>
+							<a class='nav-link' href='/api/carts/mongo'>
+								Carts</a>
+						</li>
+						{{! PRODUCTOS CON SOCKET }}
+						<li class='nav-item'>
+							<a class='nav-link' href='/realtimeproducts'>Products
+								Socket</a>
+						</li>
+						{{! CHAT CON SOCKET }}
+						<li class='nav-item'>
+							<a class='nav-link' href='/chat'>Chat</a>
+						</li>
+						{{! PRODUCTOS CON FS }}
+						<li class='nav-item'>
+							<a class='nav-link' href='/api/products'>Productos FS</a>
 						</li>
 					</ul>
 				</div>

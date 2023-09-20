@@ -47,7 +47,7 @@ const products = new ProductManager('./src/dao/db/fs/products.json');
 
 app.get('/', async (req, res) => {
 	const productsAll = await products.getProducts();
-	res.render('home', { productsAll });
+	res.render('productsFS', { productsAll });
 });
 app.post('/', async (req, res) => {
 	const prod = req.body;
