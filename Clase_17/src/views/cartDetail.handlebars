@@ -1,0 +1,18 @@
+{{!-- {{#each carts}} --}}
+<table class='table'>
+	<thead>
+		<tr>
+			<th scope='col'>ID</th>
+		</tr>
+	</thead>
+	<tbody class='table-group-divider'>
+		{{#each cartProducts}}
+			{{log this}}
+			<tr>
+				<td>{{this}}</td>
+			</tr>
+
+		{{/each}}
+	</tbody>
+</table>
+{{! <script src='/js/carts.js'></script> }}

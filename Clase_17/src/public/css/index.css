@@ -1,0 +1,10 @@
+.formularioProductos {
+	display: flex;
+}
+/* .form-control {
+	width: 30%;
+} */
+.cart_id_tabla:hover {
+	color: blue;
+	cursor: pointer;
+}
