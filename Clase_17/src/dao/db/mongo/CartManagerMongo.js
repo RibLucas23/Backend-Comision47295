@@ -22,13 +22,29 @@ class CartManagerMongo {
 		try {
 			const cart = await cartModel
 				.findOne({ _id: idCart })
-				.populate('productos.product');
+				.populate('productos.product')
+				.lean();
 			if (!cart) {
 				throw error;
 			}
 			return cart;
 		} catch (error) {
 			return console.log('Not found');
+		}
+	}
+	//UPDATE CART
+	async updateCart(idCart, newCart) {
+		try {
+			// console.log(idCart);
+
+			// console.table(newCart);
+			const cart = await cartModel.updateOne(
+				{ _id: idCart }, // Criterio de búsqueda
+				{ $set: { productos: newCart } }, // Modificación
+			);
+			console.table(cart);
+		} catch (error) {
+			return console.log('Not found for uptdate');
 		}
 	}
 	//AGREGO PRODUCTO AL CART / UPDATE A CART
@@ -67,6 +83,39 @@ class CartManagerMongo {
 		} catch (error) {
 			return console.log('Not found');
 		}
+	}
+	// EMPTY CART PRODUCTS
+	async emptyCart(cId) {
+		try {
+			const array = [];
+			const cart = await this.updateCart(cId, array);
+			console.log('cart');
+			console.log(cart);
+			return cart;
+		} catch (error) {}
+	}
+
+	// DELETE PRODUCT FROM CART
+	async deleteProduct(cId, pId) {
+		try {
+			const cart = await this.getCartById(cId);
+			// console.table(cart.productos);
+			const productIndex = cart.productos.findIndex(
+				(product) => product._id.toString() === pId,
+			);
+			if (productIndex === -1) {
+				console.error('Producto no encontrado en el carrito');
+				return;
+			}
+			// Elimina el producto del array 'productos' utilizando splice
+			cart.productos.splice(productIndex, 1);
+
+			// Guarda el carrito actualizado
+			// console.table(cart.productos);
+			await this.updateCart(cId, cart.productos);
+
+			console.log('Producto eliminado del carrito:', pId);
+		} catch (error) {}
 	}
 }
 

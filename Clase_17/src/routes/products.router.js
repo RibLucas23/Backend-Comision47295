@@ -27,7 +27,23 @@ productsRouter.get('/mongo', async (req, res) => {
 		? `http://localhost:8080/api/products/mongo?page=${productsAll.nextPage}`
 		: '';
 	productsAll.isValid = !(page <= 0 || page > productsAll.totalPages);
-	res.status(200).render('productsMongo', { productsAll });
+	const response = {
+		status: 'success',
+		payload: productsAll.docs,
+		totalDocs: productsAll.totalDocs,
+		limit: productsAll.limit,
+		totalPages: productsAll.totalPages,
+		page: productsAll.page,
+		pagingCounter: productsAll.pagingCounter,
+		hasPrevPage: productsAll.hasPrevPage,
+		hasNextPage: productsAll.hasNextPage,
+		prevPage: productsAll.prevPage,
+		nextPage: productsAll.nextPage,
+		prevLink: productsAll.prevLink,
+		nextLink: productsAll.nextLink,
+		isValid: productsAll.isValid,
+	};
+	res.status(200).render('productsMongo', { response });
 });
 
 //CREATE PRODUCT

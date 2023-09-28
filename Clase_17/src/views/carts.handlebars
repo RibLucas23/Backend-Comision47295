@@ -1,3 +1,4 @@
+{{! Boton agregar carrito }}
 <button type='button' class='btn btn-primary' id='addCartBtn'>AGREGAR CARRITO
 	<svg
 		xmlns='http://www.w3.org/2000/svg'
@@ -26,7 +27,9 @@
 		{{#each carts}}
 			<tr>
 				<td class='cart_id_tabla' data-id='{{this._id}}'>
-					{{this._id}}
+					<span class='sort'>
+						{{this._id}}
+					</span>
 				</td>
 				<td><button
 						type='button'

@@ -13,8 +13,8 @@ const cartSchema = new mongoose.Schema({
 					ref: 'products',
 				},
 				quantity: {
-					type: Number, // Puedes ajustar el tipo según tus necesidades
-					default: 0, // Establece un valor predeterminado si lo deseas
+					type: Number,
+					default: 0,
 				},
 			},
 		],

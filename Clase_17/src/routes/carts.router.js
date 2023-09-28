@@ -31,7 +31,7 @@ cartsRouter.get('/mongo/:cid', async (req, res) => {
 		const cart = await mongoCarts.getCartById(id);
 		const cartProducts = cart.productos;
 		// console.log(cartProducts);
-		res.status(200).render('cartDetail', { cartProducts });
+		res.status(200).render('cartDetail', { cartProducts, id });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: ' Internal server error' });
@@ -56,7 +56,29 @@ cartsRouter.put('/mongo/:cid/product/:pid', async (req, res) => {
 cartsRouter.delete('/mongo/:cid', async (req, res) => {
 	try {
 		const id = req.params.cid;
-		const deleteCart = await mongoCarts.delete(id);
+		const deleteCart = await mongoCarts.emptyCart(id);
+		res.status(200).send(deleteCart);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: ' Internal server error' });
+	}
+});
+cartsRouter.put('/mongo/:cid', async (req, res) => {
+	try {
+		const id = req.params.cid;
+		const newArray = req.body;
+		const cart = await mongoCarts.updateCart(id, newArray);
+		res.status(200).send(cart);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: ' Internal server error' });
+	}
+});
+cartsRouter.delete('/mongo/:cid/product/:pid', async (req, res) => {
+	try {
+		const cId = req.params.cid;
+		const pId = req.params.pid;
+		const deleteCart = await mongoCarts.deleteProduct(cId, pId);
 		res.status(200).send(deleteCart);
 	} catch (error) {
 		console.error(error);

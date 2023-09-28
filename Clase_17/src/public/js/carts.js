@@ -1,11 +1,11 @@
 const carts = document.querySelectorAll('.cart_id_tabla');
-
 carts.forEach(function (cart) {
 	cart.addEventListener('click', function () {
 		const id = this.getAttribute('data-id'); // Obtiene el valor de data-id
 		window.location.href = `/api/carts/mongo/${id}`;
 	});
 });
+
 // ADD CART BUTTON
 const addCartBtn = document.querySelector('#addCartBtn');
 addCartBtn.addEventListener('click', async () => {

@@ -5,6 +5,10 @@
 	width: 30%;
 } */
 .cart_id_tabla:hover {
+}
+.sort:hover {
+	transform: scale(1.2); /* Escala el elemento al 120% de su tamaño original */
+	transition: transform 0.2s ease-in-out; /* Agrega una transición suave */
 	color: blue;
 	cursor: pointer;
 }
