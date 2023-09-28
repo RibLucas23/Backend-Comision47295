@@ -36,9 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
 				);
 
 				// Realizar una solicitud para eliminar el producto utilizando el productId
-				const response = await fetch(`/api/carts/mongo/${productId}`, {
-					method: 'DELETE',
-				});
+				const response = await fetch(
+					`/api/carts/mongo/${productId}/?deleteCart=delete`,
+					{
+						method: 'DELETE',
+					},
+				);
 
 				if (response.ok) {
 					window.location.href = '/api/carts/mongo';

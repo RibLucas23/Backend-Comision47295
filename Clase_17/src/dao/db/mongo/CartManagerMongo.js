@@ -89,8 +89,6 @@ class CartManagerMongo {
 		try {
 			const array = [];
 			const cart = await this.updateCart(cId, array);
-			console.log('cart');
-			console.log(cart);
 			return cart;
 		} catch (error) {}
 	}

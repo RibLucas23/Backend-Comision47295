@@ -55,14 +55,25 @@ cartsRouter.put('/mongo/:cid/product/:pid', async (req, res) => {
 });
 cartsRouter.delete('/mongo/:cid', async (req, res) => {
 	try {
+		const deleteCart = req.query.deleteCart;
 		const id = req.params.cid;
-		const deleteCart = await mongoCarts.emptyCart(id);
-		res.status(200).send(deleteCart);
+		console.log(deleteCart);
+
+		if (deleteCart === 'delete') {
+			console.log('entro a delete');
+			const cart = await mongoCarts.delete(id);
+			return res.status(200).send(cart);
+		}
+		console.log('no entro a delete');
+
+		const emptyCart = await mongoCarts.emptyCart(id);
+		return res.status(200).send(emptyCart);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: ' Internal server error' });
 	}
 });
+
 cartsRouter.put('/mongo/:cid', async (req, res) => {
 	try {
 		const id = req.params.cid;
