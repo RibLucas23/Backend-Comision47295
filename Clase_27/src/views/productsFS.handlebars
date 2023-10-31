@@ -1,0 +1,107 @@
+<h1>PRODUCTOS CON FILESYSTEM</h1>
+<form action='/' method='post' class='formularioProductos'>
+	<div class='mb-3'>
+		{{! title }}
+		<label for='title' class='form-label'>Titulo del producto</label>
+		<input
+			name='title'
+			{{! agregarle atributo name al resto }}
+			type='text'
+			class='form-control'
+			id='product__title'
+			aria-describedby='title'
+		/>
+	</div>
+	{{! description }}
+	<div class='mb-3'>
+		<label for='description' class='form-label'>Description del producto</label>
+		<input
+			name='description'
+			type='text'
+			class='form-control'
+			id='product__description'
+			aria-describedby='description'
+		/>
+	</div>
+	{{! price }}
+	<div class='mb-3'>
+		<label for='price' class='form-label'>precio del producto</label>
+		<input
+			name='price'
+			type='number'
+			class='form-control'
+			id='product__price'
+			aria-describedby='price'
+		/>
+	</div>
+	{{!thumbnail}}
+	<div class='mb-3'>
+		<label for='thumbnail' class='form-label'>imagen del producto</label>
+		<input
+			name='thumbnail'
+			type='text'
+			class='form-control'
+			id='product__thumbnail'
+			aria-describedby='thumbnail'
+		/>
+	</div>
+	{{! stock }}
+	<div class='mb-3'>
+		<label for='stock' class='form-label'>Stock del producto</label>
+		<input
+			name='stock'
+			type='number'
+			class='form-control'
+			id='product__stock'
+			aria-describedby='stock'
+		/>
+	</div>
+	{{! code }}
+	<div class='mb-3'>
+		<label for='code' class='form-label'>Code del producto</label>
+		<input
+			name='code'
+			type='text'
+			class='form-control'
+			id='product__code'
+			aria-describedby='code'
+		/>
+	</div>
+	{{! category }}
+	<div class='mb-3'>
+		<label for='category' class='form-label'>Categoria del producto</label>
+		<input
+			name='category'
+			type='text'
+			class='form-control'
+			id='product__category'
+			aria-describedby='category'
+		/>
+	</div>
+	{{! submit }}
+	<button type='submit' class='btn btn-primary'>Submit</button>
+</form>
+
+{{! vista Tabla }}
+<table class='table'>
+	<thead>
+		<tr>
+			<th scope='col'>#</th>
+			<th scope='col'>Title</th>
+			<th scope='col'>Price</th>
+			<th scope='col'>Code</th>
+			<th scope='col'>Stock</th>
+		</tr>
+	</thead>
+	<tbody class='table-group-divider'>
+		{{#each productsAll}}
+			<tr>
+				<th scope='row'>{{@index}}</th>
+				<td>{{this.title}}</td>
+				<td>{{this.price}}</td>
+				<td>{{this.code}}</td>
+				<td>{{this.stock}}</td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
