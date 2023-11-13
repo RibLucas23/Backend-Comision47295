@@ -115,7 +115,7 @@
 		</tr>
 	</thead>
 	<tbody class='table-group-divider'>
-		{{#each response.payload}}
+		{{#each responseDto.payload}}
 			<tr>
 				<th scope='row'>{{@index}}</th>
 				<td>{{this.title}}</td>
@@ -142,12 +142,12 @@
 	</tbody>
 </table>
 <div>
-    {{#if response.hasPrevPage}}
-        <a href={{response.prevLink}}><< Anterior</a>
+    {{#if responseDto.hasPrevPage}}
+        <a href={{responseDto.prevLink}}><< Anterior</a>
     {{/if}}
     {{this.page}}
-     {{#if response.hasNextPage}}
-        <a href={{response.nextLink}}>Siguiente >></a>
+     {{#if responseDto.hasNextPage}}
+        <a href={{responseDto.nextLink}}>Siguiente >></a>
     {{/if}} 
 </div>
 

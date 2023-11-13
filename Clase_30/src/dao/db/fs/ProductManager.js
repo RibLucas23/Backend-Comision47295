@@ -52,7 +52,9 @@ class ProductManager {
 				this.path,
 				JSON.stringify(productos, null, '\t'),
 			);
-		} catch (error) {}
+		} catch (error) {
+			res.status(500).json({ error: ' Internal server error' });
+		}
 	}
 	//funcion auto aumentar id
 	async aumentarID() {

@@ -1,42 +1,31 @@
-import { productModel } from '../../models/product.model.js';
-
+import ProductRepository from '../../../repository/ProductRepository.js';
+const productRepository = new ProductRepository();
 class ProductsManagerMongo {
 	//traer todos los productos / leer la base de datos
 	async getAll() {
-		const products = await productModel.find().lean();
+		const products = await productRepository.getAll();
 		return products;
 	}
 	async getAllLimited(page, limit, sort, queryParam) {
-		const limite = limit;
-		console.log(queryParam);
-		const regex = new RegExp(queryParam, 'i'); // 'i' indica que la búsqueda no distingue entre mayúsculas y minúsculas
-		const filter = {
-			$or: [{ category: regex }, { title: regex }],
-		};
-		const options = {
+		const products = await productRepository.getAllLimited({
 			page,
-			limit: limite,
-			...(sort && { sort: { price: sort } }),
-			lean: true,
-		};
-
-		const products = await productModel.paginate(filter, options);
+			limit,
+			sort,
+			queryParam,
+		});
 
 		return products;
 	}
 	//traigo producto por id
 	async getProductById(idProducto) {
 		try {
-			const product = await productModel.findOne({ _id: idProducto });
+			const product = await productRepository.getProductById(idProducto);
 			if (!product) {
 				throw error;
 			}
 			return product;
 		} catch (error) {
-			console.log(
-				'Capa de Controllador ProductManager getProductById()',
-				error,
-			);
+			console.log('Capa de  ProductManager getProductById()', error);
 			throw error;
 		}
 	}
@@ -44,18 +33,7 @@ class ProductsManagerMongo {
 	// creo  el producto
 	async create(title, description, price, thumbnail, stock, category, code) {
 		try {
-			if (
-				!title ||
-				!description ||
-				!price ||
-				!thumbnail ||
-				!stock ||
-				!category ||
-				!code
-			) {
-				throw error;
-			}
-			const product = await productModel.create({
+			const product = await productRepository.create({
 				title,
 				description,
 				price,
@@ -67,7 +45,7 @@ class ProductsManagerMongo {
 
 			return product;
 		} catch (error) {
-			console.log('Capa de Controllador ProductManager create()', error);
+			console.log('Capa de ProductManager create()', error);
 			throw error;
 		}
 	}
@@ -75,7 +53,7 @@ class ProductsManagerMongo {
 	// borro un producto por id
 	async delete(pid) {
 		try {
-			const product = await productModel.deleteOne({ _id: pid });
+			const product = await productRepository.delete(pid);
 			if (!product) {
 				throw error;
 			}
@@ -98,34 +76,20 @@ class ProductsManagerMongo {
 		code,
 	) {
 		try {
-			if (
-				!title ||
-				!description ||
-				!price ||
-				!thumbnail ||
-				!stock ||
-				!category ||
-				!code
-			) {
-				throw error;
-			}
-			const newData = {
+			const newProduct = await productRepository.update({
+				pid,
 				title,
 				description,
 				price,
 				thumbnail,
-				code,
 				stock,
 				category,
-			};
-			const newProduct = await productModel.updateOne(
-				{ _id: pid },
-				{ $set: newData },
-			);
+				code,
+			});
 
 			return newProduct;
 		} catch (error) {
-			console.log('Capa de Controllador ProductManager update()', error);
+			console.log('Capa de  ProductManager update()', error);
 			throw error;
 		}
 	}

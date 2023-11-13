@@ -3,7 +3,8 @@ import privatesRoutes from '../middlewares/privateRoutes.js';
 const chatRouter = Router();
 
 chatRouter.get('/', privatesRoutes, (req, res) => {
-	res.render('index', {});
+	const user = req.session.email;
+	res.render('index', { user });
 });
 
 export default chatRouter;

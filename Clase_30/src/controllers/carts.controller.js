@@ -1,5 +1,8 @@
 //mongo
 import CartManagerMongo from '../dao/db/mongo/CartManagerMongo.js';
+import CartManager from '../dao/db/fs/CartManager.js';
+const FSCartManager = new CartManager('./src/dao/db/fs/carts.json');
+
 const mongoCarts = new CartManagerMongo();
 
 //GET ALL
@@ -27,28 +30,12 @@ export const getCartById = async (req, res) => {
 		const id = req.params.cid;
 		const cart = await mongoCarts.getCartById(id);
 		const cartProducts = cart.productos;
-		// console.log(cartProducts);
 		res.status(200).render('cartDetail', { cartProducts, id });
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: ' Internal server error' });
 	}
 };
-// ================================================BBBBBOOOOORRRRRRRRAAAAAARrr================================================
-export const getCartById2 = async (req, res) => {
-	try {
-		const id = req.params.cid;
-		const cart = await mongoCarts.getCartById(id);
-		const cartProducts = cart.productos;
-		// console.log(cartProducts);
-		// res.status(200).render('cartDetail', { cartProducts, id });
-		res.status(200).send(cart);
-	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: ' Internal server error' });
-	}
-};
-// ================================================BBBBBOOOOORRRRRRRRAAAAAARrr================================================
 
 //ADD PRODUCT TO CART
 export const addProductToCart = async (req, res) => {
@@ -108,6 +95,78 @@ export const deleteProductFromCart = async (req, res) => {
 		res.status(200).send(deleteCart);
 	} catch (error) {
 		console.error(error);
+		res.status(500).json({ error: ' Internal server error' });
+	}
+};
+//FINISH BUY
+export const buyCart = async (req, res) => {
+	try {
+		const id = req.params.cid;
+		const user = req.session.email;
+		const ticket = await mongoCarts.buyCart(id, user);
+		const ticketDTO = {
+			id: ticket._id,
+			code: ticket.code,
+			amount: ticket.amount,
+			purchaser: ticket.purchaser,
+		};
+		res.status(200).render('ticketDetail', { ticketDTO });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: ' Internal server error' });
+	}
+};
+
+//=======================================__FileSystem__=============================================
+
+//GET ALL
+export const FSgetAllCarts = async (req, res) => {
+	try {
+		const carts = await FSCartManager.getAll();
+		if (req.query.limit) {
+			const cartsLimitados = await carts.slice(0, req.query.limit);
+			res.status(200).send(cartsLimitados);
+		} else {
+			res.status(200).send(carts);
+		}
+	} catch (error) {
+		res.status(500).json({ error: ' Internal server error' });
+	}
+};
+//GET BY ID
+export const FSgetById = async (req, res) => {
+	try {
+		let id = req.params.pid;
+		id = parseInt(id);
+		const cart = await FSCartManager.getById(id);
+		if (cart) {
+			res.status(200).send(cart);
+		}
+		res.status(404).send('no se encontro cart con ese id');
+	} catch (error) {
+		res.status(500).json({ error: ' Internal server error' });
+	}
+};
+//CREATE
+export const FSCreate = async (req, res) => {
+	try {
+		const cart = await FSCartManager.addCart();
+		res.status(200).send(cart);
+	} catch (error) {
+		res.status(500).json({ error: ' Internal server error' });
+	}
+};
+//PUSH TO CART
+export const FSPushCart = async (req, res) => {
+	try {
+		const prod = await products.getProductById(req.params.pid);
+		const idProd = parseInt(prod.id);
+
+		const idCart = parseInt(req.params.cid);
+		const cart = await FSCartManager.pushProd(idCart, idProd);
+
+		res.status(200).send(cart);
+	} catch (error) {
 		res.status(500).json({ error: ' Internal server error' });
 	}
 };

@@ -14,3 +14,16 @@
 .oculto {
 	display: none;
 }
+
+#userEmail {
+	color: red;
+}
+.chatEmail {
+	color: blue;
+}
+.chatText {
+	color: black;
+}
+.chatMsj {
+	color: blueviolet;
+}
