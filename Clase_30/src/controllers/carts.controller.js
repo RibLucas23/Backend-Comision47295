@@ -1,6 +1,7 @@
 //mongo
 import CartManagerMongo from '../dao/db/mongo/CartManagerMongo.js';
 import CartManager from '../dao/db/fs/CartManager.js';
+import transporter from '../service/MailService.js';
 const FSCartManager = new CartManager('./src/dao/db/fs/carts.json');
 
 const mongoCarts = new CartManagerMongo();
@@ -113,6 +114,24 @@ export const buyCart = async (req, res) => {
 		res.status(200).render('ticketDetail', { ticketDTO });
 	} catch (error) {
 		console.error(error);
+		res.status(500).json({ error: ' Internal server error' });
+	}
+};
+
+//SEND EMAIL
+export const sendEmail = async (req, res) => {
+	try {
+		const user = req.session.email;
+		let message = {
+			from: 'seder@server.com',
+			to: user,
+			subject: 'message title prueba',
+			text: 'plaintext version',
+			html: 'html version',
+		};
+		await transporter.sendMail(message);
+		res.status(200).send(message);
+	} catch (error) {
 		res.status(500).json({ error: ' Internal server error' });
 	}
 };

@@ -15,8 +15,10 @@ import {
 	deleteProductFromCart,
 	getAllCarts,
 	getCartById,
+	sendEmail,
 	updateCart,
 } from '../controllers/carts.controller.js';
+import transporter from '../service/MailService.js';
 //======================================__MONGO__=============================================
 //
 cartsRouter.get('/mongo', privatesRoutes, getAllCarts);
@@ -34,6 +36,8 @@ cartsRouter.delete(
 );
 
 cartsRouter.get('/mongo/:cid/purchase', privatesRoutes, buyCart);
+cartsRouter.get('/mongoo/mail', privatesRoutes, sendEmail);
+
 //=======================================__FileSystem__=============================================
 cartsRouter.get('/', privatesRoutes, FSgetAllCarts);
 cartsRouter.get('/:pid', privatesRoutes, FSgetById);
