@@ -30,36 +30,53 @@ class ProductRepository {
 
 	// creo  el producto
 	async create(object) {
-		const title = object.title;
-		const description = object.description;
-		const price = object.price;
-		const thumbnail = object.thumbnail;
-		const stock = object.stock;
-		const category = object.category;
-		const code = object.code;
+		try {
+			const title = object.title;
+			const description = object.description;
+			const price = object.price;
+			const thumbnail = object.thumbnail;
+			const stock = object.stock;
+			const category = object.category;
+			const code = object.code;
 
-		if (
-			!title ||
-			!description ||
-			!price ||
-			!thumbnail ||
-			!stock ||
-			!category ||
-			!code
-		) {
-			throw error;
+			if (
+				!title ||
+				!description ||
+				!price ||
+				!thumbnail ||
+				!stock ||
+				!category ||
+				!code
+			) {
+				throw error;
+			}
+			const product = await productModel.create({
+				title,
+				description,
+				price,
+				thumbnail,
+				stock,
+				category,
+				code,
+			});
+
+			return product;
+		} catch (error) {
+			CustomError.createError({
+				name: 'Product creatin error',
+				cause: generateProductErrorInfo({
+					title,
+					description,
+					price,
+					thumbnail,
+					stock,
+					category,
+					code,
+				}),
+				message: 'Error Trying to create Product',
+				code: EErrors.INVALID_TYPES_ERROR,
+			});
 		}
-		const product = await productModel.create({
-			title,
-			description,
-			price,
-			thumbnail,
-			stock,
-			category,
-			code,
-		});
-
-		return product;
 	}
 
 	// borro un producto por id

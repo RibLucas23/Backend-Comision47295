@@ -23,7 +23,8 @@ import initializePassport from './config/passport.config.js';
 // import config from './config/env.config.js';
 import dotenv from 'dotenv';
 dotenv.config();
-
+//importo el manejador de errores
+import errorHandler from './middlewares/errors/index.js';
 //instancio el sv con express
 const app = express();
 
@@ -48,7 +49,7 @@ app.use(express.json());
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(errorHandler);
 //levanto el servidor
 const PORT = process.env.PORT;
 const httpServer = app.listen(PORT, () =>

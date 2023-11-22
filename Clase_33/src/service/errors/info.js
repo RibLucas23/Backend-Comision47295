@@ -6,3 +6,16 @@ export const generateUserErrorInfo = (user) => {
    * email: needs to be String, received ${user.email}
    `;
 };
+
+export const generateProductErrorInfo = (product) => {
+	return `One or more properties were incomplete or not valid.
+   List of required properties:
+   * title: needs to be String, received ${product.title}
+   * description: needs to be String, received ${product.description}
+   * price: needs to be String, received ${product.price}
+   *  thumbnail: needs to be String, received ${product.thumbnail}
+   * stock: needs to be String, received ${product.stock}
+   * category: needs to be String, received ${product.category}
+   * code: needs to be String, received ${product.code}
+   `;
+};

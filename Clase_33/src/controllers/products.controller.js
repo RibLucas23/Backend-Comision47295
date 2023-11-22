@@ -3,6 +3,9 @@ import ProductManager from '../dao/db/fs/ProductManager.js';
 import productFaker from '../service/FakerMockService.js';
 const FSProdManager = new ProductManager('./src/dao/db/fs/products.json');
 const mongoProducts = new ProductsManagerMongo();
+import CustomError from '../service/errors/CustomError.js';
+import EErrors from '../service/errors/enum.js';
+import { generateProductErrorInfo } from '../service/errors/info.js';
 
 //GET ALL
 export const getAllProducts = async (req, res) => {
@@ -49,6 +52,17 @@ export const createProduct = async (req, res) => {
 	try {
 		const { title, description, price, thumbnail, stock, category, code } =
 			req.body;
+		if (
+			!title ||
+			!description ||
+			!price ||
+			!thumbnail ||
+			!stock ||
+			!category ||
+			!code
+		) {
+			throw error;
+		}
 		const product = await mongoProducts.create(
 			title,
 			description,
@@ -61,8 +75,22 @@ export const createProduct = async (req, res) => {
 		const productsAll = await mongoProducts.getAll();
 		res.status(200).render('productsMongo', { productsAll });
 	} catch (error) {
-		console.error(error);
-		res.status(500).json({ error: ' Internal server error' });
+		const { title, description, price, thumbnail, stock, category, code } =
+			req.body;
+		CustomError.createError({
+			name: 'Product creating error',
+			cause: generateProductErrorInfo({
+				title,
+				description,
+				price,
+				thumbnail,
+				stock,
+				category,
+				code,
+			}),
+			message: 'Error Trying to create Product',
+			code: EErrors.INVALID_TYPES_ERROR,
+		});
 	}
 };
 

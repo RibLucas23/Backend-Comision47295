@@ -21,7 +21,7 @@ productsRouter.get('/mongo', getAllProducts);
 //GENERATE FAKER PRODUCTS
 productsRouter.get('/mongo/mockingproducts', mockingProducts);
 //CREATE PRODUCT
-productsRouter.post('/mongo', adminRoutes, createProduct);
+productsRouter.post('/mongo', createProduct);
 // GET PRODUCT BY ID
 productsRouter.get('/mongo/:pid', privatesRoutes, getById);
 //DELETE PRODUCT
