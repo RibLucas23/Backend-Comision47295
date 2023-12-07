@@ -81,47 +81,79 @@ class ProductRepository {
 	}
 
 	// borro un producto por id
-	async delete(pid) {
-		const product = await productModel.deleteOne({ _id: pid });
-		return product;
+	async delete(pid, owner) {
+		try {
+			if (owner === 'admin') {
+				console.log('delete con admin');
+
+				const product = await productModel.deleteOne({ _id: pid });
+				if (!product) {
+					throw error;
+				}
+				return product;
+			}
+			const oldProd = await productModel.findById({ _id: pid });
+			if (oldProd.owner !== owner) {
+				console.log('delete con owner que no es');
+				throw error;
+			}
+			console.log('delete con owner');
+
+			const product = await productModel.deleteOne({ _id: pid });
+			if (!product) {
+				throw error;
+			}
+			return console.log('eliminado con exito');
+			// const product = await productModel.deleteOne({ _id: pid });
+			// return product;
+		} catch (error) {
+			console.log('Capa de Repository ProductManager delete()', error);
+			throw error;
+		}
 	}
 	//actualizo un producto
 	async update(object) {
-		const pid = object.pid;
-		const title = object.title;
-		const description = object.description;
-		const price = object.price;
-		const thumbnail = object.thumbnail;
-		const stock = object.stock;
-		const category = object.category;
-		const code = object.code;
-
-		if (
-			!title ||
-			!description ||
-			!price ||
-			!thumbnail ||
-			!stock ||
-			!category ||
-			!code
-		) {
+		try {
+			const pid = object.pid;
+			const title = object.title;
+			const description = object.description;
+			const price = object.price;
+			const thumbnail = object.thumbnail;
+			const stock = object.stock;
+			const category = object.category;
+			const code = object.code;
+			const owner = object.owner;
+			if (
+				!title ||
+				!description ||
+				!price ||
+				!thumbnail ||
+				!stock ||
+				!category ||
+				!code
+			) {
+				throw error;
+			}
+			const product = await productModel.findById({ _id: pid });
+			if (product.owner === 'admin' || product.owner === owner) {
+				const newData = {
+					pid,
+					title,
+					description,
+					price,
+					thumbnail,
+					stock,
+					category,
+					code,
+				};
+				await productModel.updateOne({ _id: pid }, { $set: newData });
+			}
+			console.log('no tienes permisos para esto');
+			throw error;
+		} catch (error) {
+			console.log('Capa de Repository ProductManager update()', error);
 			throw error;
 		}
-		const newData = {
-			title,
-			description,
-			price,
-			thumbnail,
-			code,
-			stock,
-			category,
-		};
-		const newProduct = await productModel.updateOne(
-			{ _id: pid },
-			{ $set: newData },
-		);
-
-		return newProduct;
 	}
 }
 

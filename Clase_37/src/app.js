@@ -22,6 +22,8 @@ import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 // importo la config de passport
 import initializePassport from './config/passport.config.js';
+//cokkies
+import cookieParser from 'cookie-parser';
 //importo dotenv y lo inicio
 // import config from './config/env.config.js';
 import dotenv from 'dotenv';
@@ -57,6 +59,8 @@ initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(errors);
+app.use(cookieParser());
+
 //setteo cors
 app.use(
 	cors({

@@ -5,6 +5,10 @@ import publicRoutes from '../middlewares/publicRoutes.js';
 import adminRoutes from '../middlewares/adminRoutes.js';
 import navMiddleware from '../middlewares/navMiddleware.js';
 import passport from 'passport';
+import {
+	changePassword,
+	resetPassword,
+} from '../controllers/users.controller.js';
 
 const session_router = Router();
 session_router.get('/admin', adminRoutes, publicRoutes, (req, res) => {
@@ -93,5 +97,8 @@ session_router.put('/premium/:uid', async (req, res) => {
 		return res.status(500).json({ message: 'Error interno del servidor' });
 	}
 });
+
+session_router.get('/newPassword/:uid', resetPassword);
+session_router.get('/newPassword/:uid/check', changePassword);
 
 export default session_router;

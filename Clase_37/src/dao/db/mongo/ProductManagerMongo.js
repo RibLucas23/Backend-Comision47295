@@ -44,29 +44,7 @@ class ProductsManagerMongo {
 	// borro un producto por id
 	async delete(pid, owner) {
 		try {
-			console.log('delete');
-
-			if (owner === 'admin') {
-				console.log('delete con admin');
-
-				const product = await productRepository.delete(pid);
-				if (!product) {
-					throw error;
-				}
-				return product;
-			}
-			const oldProd = await productRepository.getProductById(pid);
-			if (oldProd.owner !== owner) {
-				console.log('delete con owner que no es');
-				throw error;
-			}
-			console.log('delete con owner');
-
-			const product = await productRepository.delete(pid);
-			if (!product) {
-				throw error;
-			}
-			return console.log('eliminado con exito');
+			await productRepository.delete(pid, owner);
 		} catch (error) {
 			console.log('Capa de Controllador ProductManager delete()', error);
 			throw error;
@@ -86,21 +64,31 @@ class ProductsManagerMongo {
 		owner,
 	) {
 		try {
-			const product = await this.getProductById(pid);
-			if (product.owner === 'admin' || product.owner === owner) {
-				const newProduct = await productRepository.update({
-					pid,
-					title,
-					description,
-					price,
-					thumbnail,
-					stock,
-					category,
-					code,
-				});
-
-				return newProduct;
-			}
+			// const product = await this.getProductById(pid);
+			// if (product.owner === 'admin' || product.owner === owner) {
+			// 	const newProduct = await productRepository.update({
+			// 		pid,
+			// 		title,
+			// 		description,
+			// 		price,
+			// 		thumbnail,
+			// 		stock,
+			// 		category,
+			// 		code,
+			// 	});
+			// 	return newProduct;
+			// }
+			await productRepository.update({
+				pid,
+				title,
+				description,
+				price,
+				thumbnail,
+				stock,
+				category,
+				code,
+				owner,
+			});
 		} catch (error) {
 			console.log('Capa de  ProductManager update()', error);
 			throw error;
