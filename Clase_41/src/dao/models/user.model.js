@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: 'usuario',
 	},
+	last_connection: { type: Date, default: Date.now },
 });
 
 userSchema.methods.togglePremium = async function () {

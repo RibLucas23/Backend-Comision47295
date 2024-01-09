@@ -45,6 +45,15 @@ const initializePassport = () => {
 					if (!bcrypt.compareSync(password, user.password)) {
 						return done(null, false);
 					}
+					await userModel.updateOne(
+						{ _id: user._id },
+						{
+							$set: {
+								last_connection: new Date(),
+							},
+						},
+					);
+
 					return done(null, user);
 				} catch {
 					return done(error);
