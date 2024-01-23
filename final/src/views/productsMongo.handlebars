@@ -1,0 +1,155 @@
+<h1>PRODUCTOS CON MONGO</h1>
+<h2>Bienvenido {{userUser}} </h2>
+<p>Tu rol es: <b>{{userRol}}</b>  </p>
+<form action='/api/products/mongo' method='post' class='formularioProductos'>
+	<div class='mb-3'>
+		{{! title }}
+		<label for='title' class='form-label'>Titulo del producto</label>
+		<input
+			name='title'
+			{{! agregarle atributo name al resto }}
+			type='text'
+			class='form-control'
+			id='product__title'
+			aria-describedby='title'
+		/>
+	</div>
+	{{! description }}
+	<div class='mb-3'>
+		<label for='description' class='form-label'>Description del producto</label>
+		<input
+			name='description'
+			type='text'
+			class='form-control'
+			id='product__description'
+			aria-describedby='description'
+		/>
+	</div>
+	{{! price }}
+	<div class='mb-3'>
+		<label for='price' class='form-label'>precio del producto</label>
+		<input
+			name='price'
+			type='number'
+			class='form-control'
+			id='product__price'
+			aria-describedby='price'
+		/>
+	</div>
+	{{!thumbnail}}
+	<div class='mb-3'>
+		<label for='thumbnail' class='form-label'>imagen del producto</label>
+		<input
+			name='thumbnail'
+			type='text'
+			class='form-control'
+			id='product__thumbnail'
+			aria-describedby='thumbnail'
+		/>
+	</div>
+	{{! stock }}
+	<div class='mb-3'>
+		<label for='stock' class='form-label'>Stock del producto</label>
+		<input
+			name='stock'
+			type='number'
+			class='form-control'
+			id='product__stock'
+			aria-describedby='stock'
+		/>
+	</div>
+	{{! code }}
+	<div class='mb-3'>
+		<label for='code' class='form-label'>Code del producto</label>
+		<input
+			name='code'
+			type='text'
+			class='form-control'
+			id='product__code'
+			aria-describedby='code'
+		/>
+	</div>
+	{{! category }}
+	<div class='mb-3'>
+		<label for='category' class='form-label'>Categoria del producto</label>
+		<input
+			name='category'
+			type='text'
+			class='form-control'
+			id='product__category'
+			aria-describedby='category'
+		/>
+	</div>
+	{{! submit }}
+	<button type='submit' class='btn btn-primary'>Submit</button>
+</form>
+
+{{!-- Buscador --}}
+<div class="input-group flex-nowrap">
+  <span class="input-group-text" id="addon-wrapping"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg></span>
+  <input type="text" class="form-control" placeholder="Buscador" aria-label="Username" aria-describedby="addon-wrapping" id="buscador_tabla">
+</div>
+{{! vista Tabla }}
+
+<table class='table'>
+	<thead>
+		<tr>
+			<th scope='col'>#</th>
+			<th scope='col'>Title</th>
+			<th scope='col'>Price
+				<svg id="price_svg_desc" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-down sort" viewBox="0 0 16 16">
+  <path d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
+</svg> 
+				 <svg id="price_svg_asc" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-up-alt sort" viewBox="0 0 16 16">
+  <path d="M3.5 13.5a.5.5 0 0 1-1 0V4.707L1.354 5.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 4.707V13.5zm4-9.5a.5.5 0 0 1 0-1h1a.5.5 0 0 1 0 1h-1zm0 3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1h-3zm0 3a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1h-5zM7 12.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5z"/>
+</svg>
+			</th>
+			<th scope='col'>Category</th>
+			<th scope='col'>Stock</th>
+			<th scope='col'>ID</th>
+			<th scope='col'>Agregar al Carro</th>
+			<th scope='col'>Eliminar</th>
+
+		</tr>
+	</thead>
+	<tbody class='table-group-divider'>
+		{{#each responseDto.payload}}
+			<tr>
+				<th scope='row'>{{@index}}</th>
+				<td>{{this.title}}</td>
+				<td>{{this.price}}</td>
+				<td>{{this.category}}</td>
+				<td>{{this.stock}}</td>
+				<td>{{this._id}}</td>
+				<td><button
+						type='button'
+						class='btn btn-success addToCartButton'
+						productId='{{this._id}}'
+					><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+  <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9V5.5z"/>
+  <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+</svg>
+					Agregar al Carro</button></td>
+				<td><button
+						type='button'
+						class='btn btn-danger'
+						id='deleteButton-{{this._id}}'
+					>X</button></td>
+			</tr>
+		{{/each}}
+	</tbody>
+</table>
+<div>
+    {{#if responseDto.hasPrevPage}}
+        <a href={{responseDto.prevLink}}><< Anterior</a>
+    {{/if}}
+    {{this.page}}
+     {{#if responseDto.hasNextPage}}
+        <a href={{responseDto.nextLink}}>Siguiente >></a>
+    {{/if}} 
+</div>
+
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+<script src='/js/products.js'></script>

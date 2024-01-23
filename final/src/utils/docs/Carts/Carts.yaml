@@ -1,0 +1,283 @@
+paths:
+  /api/carts/mongo:
+    get:
+      summary: Obtiene todos los carts
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carts fueron obtenidos satisfactoriamente desde la bd
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        '500':
+          description: Algo falló al traer los carts
+    post:
+      summary: Crea un nuevo cart vacio
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Cart creado exitosamente
+        '500':
+          description: Algo falló en la creación del cart
+
+  /api/carts/mongo/{cid}:
+    get:
+      summary: Obtiene el cart con Id especifico 
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del cart a buscar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Los carts fueron obtenidos satisfactoriamente desde la bd
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        '500':
+          description: Algo falló al buscar el cart con ese id
+    delete:
+      summary: elimina el Cart con Id especifico 
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del cart a buscar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Los carts fueron eliminados satisfactoriamente desde la bd
+        '500':
+          description: Algo falló al eliminar el cart con ese id
+    put:
+      summary: Actualiza un cart a partir de su id
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del cart a buscar
+          schema:
+            type: string  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateCart'
+      responses:
+        '200':
+          description: El producto fue actualizado satisfactoriamente
+        '500':
+          description: Algo falló en la actualización del producto
+  /api/carts/mongo/{cid}/product/{pid}:
+    put:
+      summary: Agrega un producto segun su id a un cart con Id especifico 
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del cart a buscar
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: Id del product a buscar
+          schema:
+            type: string
+      requestBody:
+        description: Datos para añadir el producto al carrito
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pQuantity:
+                  type: integer
+                  description: Cantidad del producto a añadir al carrito
+              example:
+                pQuantity: 1
+      responses:
+        '200':
+          description: Producto añadido al carrito exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: Internal server error
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito del que se eliminará el producto
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se eliminará del carrito
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Producto eliminado del carrito exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: Internal server error
+  /api/carts/{cid}/buy:
+    post:
+      summary: Realiza la compra del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito que se va a comprar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Compra realizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: objectId
+                    description: ID del ticket de compra
+                  code:
+                    type: string
+                    description: Código único del ticket de compra
+                  amount:
+                    type: number
+                    description: Monto total de la compra
+                  purchaser:
+                    type: string
+                    description: Usuario que realizó la compra
+                example:
+                  id: 65136358d865b64c9d13b04e
+                  code: ABC123
+                  amount: 150.00
+                  purchaser: user@example.com
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              example:
+                error: Internal server error
+
+
+
+# Componentes
+
+
+components:
+  schemas:
+    Cart:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: objectId  # Corregido: cambiado objectId() a objectId
+            description: ID único auto generado
+          productos:
+            type: array
+            items:
+              type: object
+              properties:
+                product:
+                  type: objectId  # Corregido: cambiado objectId() a objectId
+                  description: ID del producto dentro del Cart
+                quantity:
+                  type: number
+                  description: Cantidad de productos
+      example:
+        - _id: 65136358d865b64c9d13b04e
+          productos:
+            - product: 6511c90898099533fc65cfd4
+              quantity: 1
+            - product: 6511c90898099533fc65cfd2
+              quantity: 2
+  requestBodies:
+    updateCart:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: objectId
+                  description: ID único del producto dentro del carrito
+                quantity:
+                  type: number
+                  description: Cantidad actualizada del producto
+
+
+
+# components:
+#   schemas:
+#     Cart:
+#       type: array
+#       properties:
+#         _id:
+#           type: objectId()
+#           description: ID unico auto generado
+#         productos:
+#           type: array
+#           properties:
+#             product:
+#               type: object
+#               description: Producto dentro del Cart
+#             quantity:
+#               type: number
+#               description: Cantidad de productos
+#     example:
+#       _id: 65136358d865b64c9d13b04e
+#       productos: 
+#         product: 6511c90898099533fc65cfd4
+#         quantity: 1
+#         product: 6511c90898099533fc65cfd2
+#         quantity: 2
+                
+

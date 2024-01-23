@@ -1,0 +1,302 @@
+paths:
+  /api/products/mongo:
+   get:
+      summary: Obtiene todos los productos
+      tags:
+        - Products
+      responses:
+        '200':
+          description: Los productos fueron obtenidos satisfactoriamente desde la bd
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        '500':
+          description: Algo falló en la búsqueda de productos en la base de datos
+   post:
+      summary: Crea un Producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createProduct'
+      responses:
+        '200':
+          description: El Producto fue creado satisfactoriamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        '500':
+          description: Algo falló en la creación del producto
+  /api/products/mongo/{pid}:
+   get:
+      summary: Obtiene producto según el id
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: Id del producto a buscar
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El producto fue obtenido satisfactoriamente desde la bd
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        '500':
+          description: Algo falló en la búsqueda de productos en la base de datos
+   put:
+      summary: Actualiza un producto a partir de su id
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: Id del producto a buscar
+          schema:
+            type: string  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProduct'
+      responses:
+        '200':
+          description: El producto fue actualizado satisfactoriamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        '500':
+          description: Algo falló en la actualización del producto
+   delete:
+      summary: elimina el Product con Id especifico 
+      tags:
+        - Products
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Id del Product a buscar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El Product fueron eliminados satisfactoriamente desde la bd
+        '500':
+          description: Algo falló al eliminar el Product con ese id
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId()
+          description: id único de la producto
+        title:
+          type: string
+          description: título del producto
+        description:
+          type: string
+          description: descripción del producto
+        price:
+          type: number
+          description: precio del producto
+        thumbnail:
+          type: string
+          description: Imagen del producto
+        stock:
+          type: number
+          description: Stock del producto
+        category:
+          type: string
+          description: Categoría del producto
+        code:
+          type: string
+          description: Código único del producto
+        owner:
+          type: string
+          description: Dueño del producto
+      example:
+        _id: 65726690b20d7affe280cc37
+        title: Router WiFi TP-Link
+        description: Router inalámbrico de alta velocidad para redes domésticas.
+        price: 49.99
+        thumbnail: 'http://localhost:8080/imagen-router_tp-link'
+        stock: 99
+        category: Redes
+        code: RED001
+        owner: ownerProduct@email.com
+  requestBodies:
+    updateProduct:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: título del producto
+              description:
+                type: string
+                description: descripción del producto
+              price:
+                type: number
+                description: precio del producto
+              thumbnail:
+                type: string
+                description: Imagen del producto
+              stock:
+                type: number
+                description: Stock del producto
+              category:
+                type: string
+                description: Categoría del producto
+              code:
+                type: string
+                description: Código único del producto
+      example:
+        title: Router WiFi TP-Link
+        description: Router inalámbrico de alta velocidad para redes domésticas.
+        price: 49.99
+        thumbnail: 'http://localhost:8080/imagen-router_tp-link'
+        stock: 99
+        category: Redes
+        code: RED001
+    createProduct: 
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: título del producto
+              description:
+                type: string
+                description: descripción del producto
+              price:
+                type: number
+                description: precio del producto
+              thumbnail:
+                type: string
+                description: Imagen del producto
+              stock:
+                type: number
+                description: Stock del producto
+              category:
+                type: string
+                description: Categoría del producto
+              code:
+                type: string
+                description: Código único del producto
+              owner:
+                type: string
+                description: Dueño del producto
+          example:
+            title: Router WiFi TP-Link
+            description: Router inalámbrico de alta velocidad para redes domésticas.
+            price: 49.99
+            thumbnail: 'http://localhost:8080/imagen-router_tp-link'
+            stock: 99
+            category: Redes
+            code: RED001
+            owner: ownerProduct@email.com
+
+
+# paths:
+#    /api/products/mongo:
+#       get:
+#          summary: Obtiene todas los productos
+#          tags:
+#             - Products
+#          responses:
+#             '200':
+#                description: Los products fueron obtenidos satisfactoriamente desde la bd
+#                content:
+#                   application/json:
+#                      schema:
+#                         type: array
+#                         items:
+#                            $ref: '#components/schemas/Product'
+#             '500':
+#                description: Algo falló en la búsqueda de productos en la base de datos
+#    /api/products/mongo/{pid}:
+#       get:
+#          summary: Obtiene producto segun el id
+#          tags:
+#              - Products
+#          parameters:
+#          - name: pid
+#           in: path
+#           required: true
+#           description: Id del producto a buscar
+#           schema:
+#            $type: String
+#         responses:
+#              '200':
+#                 description: El producto fue obtenido satisfactoriamente desde la bd
+#                 content:
+#                    application/json:
+#                       schema:
+#                         $ref: '#components/schemas/Product'
+#              '500':
+#                 description: Algo falló en la búsqueda de productos en la base de datos
+
+# components:
+#    schemas:
+#       Product:
+#          type: object
+#          properties:
+#             _id:
+#                type: ObjectId()
+#                description: id unico de la producto
+#             title:
+#                type: String
+#                description: titulo del producto
+#             description:
+#                type: String
+#                description: descripcion del producto
+#             price:
+#                type: Number
+#                description: precio del producto
+#             thumbnail:
+#                type: String
+#                description: Imagen del producto
+#             stock:
+#                type: Number
+#                description: Stock del producto
+#             category:
+#                type: String
+#                description: Categoria del producto
+#             code:
+#                type: String
+#                description: Codigo unico del producto
+#             owner:
+#                type: String
+#                description: Dueño del producto
+#          example:
+#             _id: 65726690b20d7affe280cc37
+#             title: Router WiFi TP-Link
+#             description: Router inalámbrico de alta velocidad para redes domésticas.
+#             price: 49.99
+#             thumbnail: 'http://localhost:8080/imagen-router_tp-link'
+#             stock: 99
+#             category: Redes
+#             code: RED001
+#             owner: ownerProduct@email.com
